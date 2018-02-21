@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Homepage{% endblock %}
+{% block header %}<h1>Bienvenido a la pagina de inicio</h1>{% endblock %}
+{% block content %}
+	{% if request.user.is_authenticated %}
+		{% block tabla %}
+			<a href="{% url "schedule_table" %}" class="btn btn-info">Ver tabla</a>
+			<a href="{% url "statistics_home" %}" class="btn btn-info">Ver estadisticas</a>
+		{% endblock %}
+	{% else %}
+		Loguea para ver tus horarios
+	{% endif %}
+{% endblock %}

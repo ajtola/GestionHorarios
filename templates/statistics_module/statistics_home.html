@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Statistics{% endblock %}
+{% block header %}<h1>Bienvenido a la pagina de estadisticas</h1>{% endblock %}
+{% block content %}
+	{% if request.user.is_authenticated %}
+		Enlaces a las estadisticas
+		<br></br>	
+	{% else %}
+		Loguea para ver tus estadisticas
+	{% endif %}
+	
+	<!-- Nuevo -->
+	
+	<div>
+		<div>
+			<input type="text" name="A" id="year" placeholder="Year">
+		</div>
+		<div>
+			<input type="text" name="M" placeholder="Month">
+		</div>
+		<div>
+			<input type="text" name="D" placeholder="Day">
+		</div>
+	    <button type="submit" id="submit">Submit</button>		    
+    </div>
+    <br>
+    
+    <div>
+    	<table id="tabla_filtrada" class="table table-striped table-sm">
+    	</table>
+    </div>
+	
+	<script>
+		$.ajaxSetup({ 
+	     beforeSend: function(xhr, settings) {
+	         function getCookie(name) {
+	             var cookieValue = null;
+	             if (document.cookie && document.cookie != '') {
+	                 var cookies = document.cookie.split(';');
+	                 for (var i = 0; i < cookies.length; i++) {
+	                     var cookie = jQuery.trim(cookies[i]);
+	                     // Does this cookie string begin with the name we want?
+	                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+	                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                         break;
+	                     }
+	                 }
+	             }
+	             return cookieValue;
+		     }
+		     
+	         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+	             // Only send the token to relative URLs i.e. locally.
+	             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+	         }
+		  } 
+		});
+	
+		$(document).ready(function() {
+			$("#submit").click(function() {
+				var year = $("#year").val();
+				$.ajax({
+					method: "POST",
+				  	url: "{% url 'statistics_search' %}",
+				  	data: {A: year}
+				}).done(function(response) {
+				
+					$("#tabla_filtrada").append("<thead><tr><th>Entrada</th><th>Salida</th></tr></thead><tbody>");
+					
+					for (i = 0; i < response.length; i++) {
+						$("#tabla_filtrada").append("<tr><td>"+response[i].Start+"</td><td>"+response[i].Finish+"</td></tr>");
+					}
+					
+					$("#tabla_filtrada").append("</tbody>");
+					$("#tabla_filtrada").append("</table>");
+					
+				});
+			});
+		});
+	</script>
+{% endblock %}
