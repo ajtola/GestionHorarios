@@ -26,7 +26,7 @@ SECRET_KEY = 'le)95o3=q*vtu)0n$6-frdm(z(38vozq!v9@n^5mpemdm&bp#)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.201']
 
 
 # Application definition
@@ -121,6 +121,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = BASE_DIR + '/static/'
+
+STATIC_ROOT = BASE_DIR + 'schedule/static/'
 
 LOGIN_URL = reverse_lazy('homepage_login')
