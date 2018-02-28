@@ -19,6 +19,8 @@ from schedule_mgmt.views import homepage, homepage_login, logout_view
 from schedule.views import schedule_table
 import statistics_module
 from statistics_module import urls
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     url(r'admin/', include(admin.site.urls)),
@@ -27,4 +29,4 @@ urlpatterns = [
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^homepage/$', homepage, name="homepage"),
     url(r'^schedule_table/$', schedule_table, name="schedule_table"),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
